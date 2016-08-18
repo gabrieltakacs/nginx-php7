@@ -41,8 +41,7 @@ COPY php7/www.conf /etc/php7/php-fpm.d/www.conf
 RUN ln -s /usr/bin/php7 /usr/bin/php
 
 # Configure xdebug
-RUN echo 'zend_extension="/usr/lib/php7/modules/xdebug.so"' >> /etc/php7/php.ini \
-    && echo "xdebug.remote_enable=on" >> /etc/php7/php.ini \
+RUN echo "xdebug.remote_enable=on" >> /etc/php7/php.ini \
     && echo "xdebug.remote_autostart=off" >> /etc/php7/php.ini \
     && echo "xdebug.remote_connect_back=0" >> /etc/php7/php.ini \
     && echo "xdebug.remote_port=9001" >> /etc/php7/php.ini \

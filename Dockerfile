@@ -5,7 +5,9 @@ MAINTAINER Gabriel Takács <gtakacs@gtakacs.sk>
 RUN apk add nginx supervisor
 
 # Install PHP 7
-RUN apk --no-cache --update --repository=http://dl-4.alpinelinux.org/alpine/edge/testing add \
+RUN apk --no-cache --update --repository=http://dl-4.alpinelinux.org/alpine/edge/testing \
+                            --repository http://dl-cdn.alpinelinux.org/alpine/edge/main \
+                            --repository http://dl-cdn.alpinelinux.org/alpine/edge/community add \
     php7 \
     php7-fpm \
     php7-xml \

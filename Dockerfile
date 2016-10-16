@@ -27,6 +27,14 @@ RUN apk --no-cache --update --repository=http://dl-4.alpinelinux.org/alpine/edge
     php7-dev \
     php7-xdebug
 
+# Install NPM & NPM modules (gulp, bower)
+RUN apk --no-cache --update --repository=http://dl-4.alpinelinux.org/alpine/edge/testing \
+                            --repository http://dl-cdn.alpinelinux.org/alpine/edge/main add \
+    nodejs
+RUN npm install --silent -g \
+    gulp \
+    bower
+
 # Install composer
 ENV COMPOSER_HOME=/composer
 RUN mkdir /composer \
@@ -66,5 +74,5 @@ COPY run.sh /run.sh
 RUN chmod a+x /run.sh
 
 EXPOSE 80 443
-
 CMD ["/run.sh"]
+WORKDIR /var/www/web

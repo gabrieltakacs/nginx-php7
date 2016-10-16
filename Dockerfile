@@ -1,13 +1,12 @@
 FROM gabrieltakacs/alpine:latest
 MAINTAINER Gabriel Takács <gtakacs@gtakacs.sk>
 
-# Install nginx
-RUN apk add nginx supervisor
-
-# Install PHP 7
+# Install nginx, supservisor, PHP 7
 RUN apk --no-cache --update --repository=http://dl-4.alpinelinux.org/alpine/edge/testing \
                             --repository http://dl-cdn.alpinelinux.org/alpine/edge/main \
                             --repository http://dl-cdn.alpinelinux.org/alpine/edge/community add \
+    nginx \
+    supervisor \
     php7 \
     php7-fpm \
     php7-xml \
@@ -25,7 +24,8 @@ RUN apk --no-cache --update --repository=http://dl-4.alpinelinux.org/alpine/edge
     php7-mbstring \
     php7-zip \
     php7-dev \
-    php7-xdebug
+    php7-xdebug \
+    php7-session
 
 # Install NPM & NPM modules (gulp, bower)
 RUN apk --no-cache --update --repository=http://dl-4.alpinelinux.org/alpine/edge/testing \

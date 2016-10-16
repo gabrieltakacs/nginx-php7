@@ -1,6 +1,9 @@
 FROM gabrieltakacs/alpine:latest
 MAINTAINER Gabriel Takács <gtakacs@gtakacs.sk>
 
+# Copy and add files first (to make dockerhub autobuild working: https://forums.docker.com/t/automated-docker-build-fails/22831/14)
+COPY run.sh /run.sh
+
 # Install nginx, supservisor, PHP 7
 RUN apk --no-cache --update --repository=http://dl-4.alpinelinux.org/alpine/edge/testing \
                             --repository http://dl-cdn.alpinelinux.org/alpine/edge/main \
@@ -69,8 +72,7 @@ COPY nginx.conf /etc/nginx/nginx.conf
 RUN mkdir /etc/nginx/vhosts
 COPY web.conf /etc/nginx/vhosts/web.conf
 
-# Add run file
-COPY run.sh /run.sh
+# Make run file executable
 RUN chmod a+x /run.sh
 
 EXPOSE 80 443

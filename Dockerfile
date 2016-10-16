@@ -25,7 +25,8 @@ RUN apk --no-cache --update --repository=http://dl-4.alpinelinux.org/alpine/edge
     php7-zip \
     php7-dev \
     php7-xdebug \
-    php7-session
+    php7-session \
+    php7-dom
 
 # Install NPM & NPM modules (gulp, bower)
 RUN apk --no-cache --update --repository=http://dl-4.alpinelinux.org/alpine/edge/testing \
@@ -39,8 +40,7 @@ RUN npm install --silent -g \
 ENV COMPOSER_HOME=/composer
 RUN mkdir /composer \
     && curl -sS https://getcomposer.org/installer | php7 \
-    && mkdir -p /opt/composer \
-    && mv composer.phar /opt/composer/composer.phar
+    && mv composer.phar /usr/bin/composer
 
 # php7-fpm configuration
 RUN adduser -s /sbin/nologin -D -G www-data www-data

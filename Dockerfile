@@ -5,16 +5,14 @@ MAINTAINER Gabriel Takács <gtakacs@gtakacs.sk>
 COPY run.sh /run.sh
 
 # Install nginx, supservisor, PHP 7
-RUN apk --no-cache --update --repository=http://dl-4.alpinelinux.org/alpine/edge/testing \
-                            --repository http://dl-cdn.alpinelinux.org/alpine/edge/main \
-                            --repository http://dl-cdn.alpinelinux.org/alpine/edge/community add \
+RUN apk --no-cache --update add \
     nginx \
     supervisor \
     php7 \
     php7-fpm \
     php7-xml \
     php7-pgsql \
-    php7-pdo-pgsql \
+    php7-pdo_pgsql \
     php7-mysqli \
     php7-pdo_mysql \
     php7-mcrypt \
@@ -30,12 +28,12 @@ RUN apk --no-cache --update --repository=http://dl-4.alpinelinux.org/alpine/edge
     php7-dev \
     php7-xdebug \
     php7-session \
-    php7-dom
+    php7-dom \
+    php7-pcntl \
+    php7-posix
 
 # Install NPM & NPM modules (gulp, bower)
-RUN apk --no-cache --update --repository=http://dl-4.alpinelinux.org/alpine/edge/testing \
-                            --repository http://dl-cdn.alpinelinux.org/alpine/edge/main add \
-    nodejs
+RUN apk --no-cache --update add nodejs
 RUN npm install --silent -g \
     gulp \
     bower

@@ -14,6 +14,7 @@ RUN apk --no-cache --update --repository=http://dl-4.alpinelinux.org/alpine/edge
     php7-fpm \
     php7-xml \
     php7-pgsql \
+    php7-pdo-pgsql \
     php7-mysqli \
     php7-pdo_mysql \
     php7-mcrypt \

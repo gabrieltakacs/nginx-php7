@@ -30,7 +30,13 @@ RUN apk --no-cache --update add \
     php7-session \
     php7-dom \
     php7-pcntl \
-    php7-posix
+    php7-posix \
+    php5-memcache \
+    php5-memcached \
+    php5-imagick \
+    memcached \
+    imagemagick \
+    postfix
 
 # Install NPM & NPM modules (gulp, bower)
 RUN apk --no-cache --update add nodejs

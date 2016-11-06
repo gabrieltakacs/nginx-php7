@@ -35,7 +35,8 @@ RUN apk --no-cache --update add \
     imagemagick \
     postfix \
     libssh2 \
-    php7-ssh2
+    php7-ssh2 \
+    openssh
 
 # Install NPM & NPM modules (gulp, bower)
 RUN apk --no-cache --update add nodejs
@@ -56,17 +57,6 @@ COPY php7/www.conf /etc/php7/php-fpm.d/www.conf
 
 # Link php7 binary to php
 RUN ln -s /usr/bin/php7 /usr/bin/php
-
-# Configure xdebug
-RUN echo "xdebug.remote_enable=on" >> /etc/php7/php.ini \
-    && echo "xdebug.remote_autostart=off" >> /etc/php7/php.ini \
-    && echo "xdebug.remote_connect_back=0" >> /etc/php7/php.ini \
-    && echo "xdebug.remote_port=9001" >> /etc/php7/php.ini \
-    && echo "xdebug.remote_handler=dbgp" >> /etc/php7/php.ini \
-    && echo "xdebug.remote_host=192.168.65.1" >> /etc/php7/php.ini
-    # (Only for MAC users) Fill IP address from:
-    # cat /Users/gtakacs/Library/Containers/com.docker.docker/Data/database/com.docker.driver.amd64-linux/slirp/host
-    # Source topic on Docker forums: https://forums.docker.com/t/ip-address-for-xdebug/10460/22
 
 # Copy Supervisor config file
 COPY supervisor/supervisord.conf /etc/supervisor/conf.d/supervisord.conf

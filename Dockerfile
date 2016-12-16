@@ -1,74 +1,64 @@
-FROM gabrieltakacs/alpine:latest
+FROM gabrieltakacs/ubuntu-xenial:1.0.0
 MAINTAINER Gabriel Takács <gtakacs@gtakacs.sk>
 
-# Copy and add files first (to make dockerhub autobuild working: https://forums.docker.com/t/automated-docker-build-fails/22831/14)
-COPY run.sh /run.sh
-
 # Install nginx, supservisor, PHP 7
-RUN apk --no-cache --update add \
+RUN apt-get update && \
+    apt-get -y install \
     nginx \
     supervisor \
-    php7 \
-    php7-fpm \
-    php7-xml \
-    php7-pgsql \
-    php7-pdo_pgsql \
-    php7-mysqli \
-    php7-pdo_mysql \
-    php7-mcrypt \
-    php7-opcache \
-    php7-gd \
-    php7-curl \
-    php7-json \
-    php7-phar \
-    php7-openssl \
-    php7-ctype \
-    php7-mbstring \
-    php7-zip \
-    php7-dev \
-    php7-xdebug \
-    php7-session \
-    php7-dom \
-    php7-pcntl \
-    php7-posix \
+    php7.0 \
+    php7.0-fpm \
+    php7.0-xml \
+    php7.0-pgsql \
+    php7.0-mysqli \
+    php7.0-mcrypt \
+    php7.0-opcache \
+    php7.0-gd \
+    php7.0-curl \
+    php7.0-json \
+    php7.0-phar \
+    php7.0-ctype \
+    php7.0-mbstring \
+    php7.0-zip \
+    php7.0-dev \
+    php-xdebug \
+    php7.0-dom \
+    php7.0-posix \
     memcached \
     imagemagick \
-    postfix \
-    libssh2 \
-    php7-ssh2 \
-    openssh
+    postfix
 
 # Install NPM & NPM modules (gulp, bower)
-RUN apk --no-cache --update add nodejs
-RUN npm install --silent -g \
+RUN apt-get -y install nodejs-legacy nodejs npm
+RUN npm install -g \
     gulp \
     bower
 
 # Install composer
 ENV COMPOSER_HOME=/composer
 RUN mkdir /composer \
-    && curl -sS https://getcomposer.org/installer | php7 \
+    && curl -sS https://getcomposer.org/installer | php \
     && mv composer.phar /usr/bin/composer
 
 # php7-fpm configuration
-RUN adduser -s /sbin/nologin -D -G www-data www-data
+RUN adduser --shell /sbin/nologin --disabled-login www-data www-data
 COPY php7/php-fpm.conf /etc/php7/php-fpm.conf
 COPY php7/www.conf /etc/php7/php-fpm.d/www.conf
+RUN mkdir /run/php/
 
-# Link php7 binary to php
-RUN ln -s /usr/bin/php7 /usr/bin/php
+RUN mkdir /var/run/sshd
+RUN chmod 0755 /var/run/sshd
 
 # Copy Supervisor config file
 COPY supervisor/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
 # Add nginx configuration files
-COPY nginx.conf /etc/nginx/nginx.conf
+COPY nginx/nginx.conf /etc/nginx/nginx.conf
 RUN mkdir /etc/nginx/vhosts
-COPY web.conf /etc/nginx/vhosts/web.conf
 
-# Make run file executable
+# Copy and add files first (to make dockerhub autobuild working: https://forums.docker.com/t/automated-docker-build-fails/22831/14)
+COPY run.sh /run.sh
 RUN chmod a+x /run.sh
 
 EXPOSE 80 443
 CMD ["/run.sh"]
-WORKDIR /var/www/web
